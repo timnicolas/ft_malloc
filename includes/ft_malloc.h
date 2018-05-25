@@ -13,11 +13,12 @@
 #ifndef FT_MALLOC_H
 # define FT_MALLOC_H
 
-# include <libft.h>
+# include <stdio.h>///////////////
+# include <stddef.h>
 
-void		*malloc(size_t size);
-void		*realloc(void *ptr, size_t size);
-void		free(void *ptr);
-void		show_alloc_mem();
+void			*malloc(size_t size);
+void			*realloc(void *ptr, size_t size);
+void			free(void *ptr);
+void			show_alloc_mem();
 
 #endif

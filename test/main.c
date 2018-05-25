@@ -11,13 +11,13 @@
 /* ************************************************************************** */
 
 #include <ft_malloc.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 int			main(int ac, char **av)
 {
+	char	*s;
+
 	(void)ac;
 	(void)av;
-	return (EXIT_SUCCESS);
+	s = malloc(sizeof(char) * 12);
+	return (0);
 }

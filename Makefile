@@ -22,6 +22,7 @@ FILES = malloc.c \
 		show_alloc_mem.c
 
 HFILES = includes/ft_malloc.h \
+		 includes/other.h \
 		 libft/includes/libft.h
 
 LIBFT_DIR = libft/

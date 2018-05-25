@@ -10,10 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_malloc.h>
+#include <other.h>
 
 void		*malloc(size_t size)
 {
-	(void)size;
-	return (NULL);
+	void	*ptr;
+
+	printf("ok\n");
+	ptr = alloc_memory(size);
+	return (ptr);
 }
