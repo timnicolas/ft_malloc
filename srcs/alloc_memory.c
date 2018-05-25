@@ -10,9 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <other.h>
+#include <ft_malloc.h>
 
-static void	*init_data()
+t_data		*data = NULL;
+
+static void	init_data()
 {
 	int		size;
 
@@ -26,6 +28,7 @@ static void	*init_data()
 
 void		*alloc_memory(size_t size)
 {
+	(void)size;
 	if (data == NULL)
 		init_data();
 	return (NULL);
