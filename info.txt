@@ -1,4 +1,4 @@
 t_data
 tiny (tiny size)
 small (small size)
-large (sizeof(t_info))
+large (sizeof(t_info)) genre de liste chainee des blocks alloue

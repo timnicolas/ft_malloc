@@ -32,8 +32,8 @@
 /*
 **	size alloc = SIZE_ALLOC * getpagesize(); (4096)
 */
-# define SIZE_ALLOC_TINY  4
-# define SIZE_ALLOC_SMALL 16
+# define SIZE_ALLOC_TINY  ((size_t)(4 * getpagesize()))
+# define SIZE_ALLOC_SMALL ((size_t)(16 * getpagesize()))
 
 /*
 **	info before a malloc:
@@ -61,6 +61,8 @@ typedef struct		s_data
 }					t_data;
 
 void				*alloc_memory(size_t size);
+size_t				align(size_t size);
+
 void				*malloc(size_t size);
 void				*realloc(void *ptr, size_t size);
 void				free(void *ptr);

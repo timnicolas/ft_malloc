@@ -14,10 +14,16 @@
 
 int			main(int ac, char **av)
 {
-	char	*s;
+	char	*s1;
+	char	*s2;
 
 	(void)ac;
 	(void)av;
-	s = malloc(sizeof(char) * 12);
+	s1 = malloc(5000);
+	s1[4000] = 'a';
+	s2 = malloc(5000);
+	s2[4000] = 'c';
+	printf("%p %c\n", s1, s1[4000]);
+	printf("%p %c\n", s2, s2[4000]);
 	return (0);
 }
