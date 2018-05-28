@@ -32,7 +32,7 @@
 /*
 **	size alloc = SIZE_ALLOC * getpagesize(); (4096)
 */
-# define SIZE_ALLOC_TINY  ((size_t)(4 * getpagesize()))
+# define SIZE_ALLOC_TINY  ((size_t)(1 * getpagesize()))
 # define SIZE_ALLOC_SMALL ((size_t)(16 * getpagesize()))
 
 /*

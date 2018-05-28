@@ -25,18 +25,28 @@
 
 #include <ft_malloc.h>
 
+#define NB_MALLOC 26
+#define SIZE_1 8
+
 int			main(int ac, char **av)
 {
-	char	*s1;
-	char	*s2;
+	int		i;
+	char	*(s1[NB_MALLOC]);
 
 	(void)ac;
 	(void)av;
-	s1 = malloc(5000);
-	s1[4000] = 'a';
-	s2 = malloc(5000);
-	s2[4000] = 'c';
-	printf("%p %c\n", s1, s1[4000]);
-	printf("%p %c\n", s2, s2[4000]);
+	i = -1;
+	while (++i < NB_MALLOC)
+	{
+		if (!(s1[i] = malloc(sizeof(char) * (SIZE_1))))
+			return (1);
+		s1[i][0] = 'a' + i % 26;
+		s1[i][1] = '\0';
+	}
+	i = -1;
+	while (++i < NB_MALLOC)
+	{
+		printf("string %d: '%s' -> %p\n", i, s1[i]);
+	}
 	return (0);
 }
