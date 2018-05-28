@@ -112,4 +112,6 @@ exec:
 	@rm a.out
 	@printf $(MAGENTA)$(BOLD)"--------------------\n"$(NORMAL)
 
-.PHONY: all clean fclean re exec
+reexec: re exec
+
+.PHONY: all clean fclean re exec reexec

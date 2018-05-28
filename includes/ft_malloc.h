@@ -33,7 +33,7 @@
 **	size alloc = SIZE_ALLOC * getpagesize(); (4096)
 */
 # define SIZE_ALLOC_TINY  ((size_t)(1 * getpagesize()))
-# define SIZE_ALLOC_SMALL ((size_t)(16 * getpagesize()))
+# define SIZE_ALLOC_SMALL ((size_t)(8 * getpagesize()))
 
 /*
  *	type of allocation (used in function alloc little)
