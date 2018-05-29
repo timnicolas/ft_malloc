@@ -94,7 +94,7 @@ fclean: clean
 	$(START)
 	@printf $(RED)"-x remove $(NAME)\n"$(NORMAL)
 	@printf $(RED)"-x remove $(NAME_LINK)\n"$(NORMAL)
-	@rm -f $(NAME) $(NAME_LINK)
+	@rm -rf $(NAME) $(NAME_LINK) a.out.dSYM a.out
 	$(END)
 
 re: fclean
