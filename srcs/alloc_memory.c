@@ -6,19 +6,21 @@
 /*   By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 18:22:06 by tnicolas          #+#    #+#             */
-/*   Updated: 2018/05/28 14:34:29 by tnicolas         ###   ########.fr       */
+/*   Updated: 2018/05/30 15:26:47 by tnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 **   ____________________________________________________________
 **   | alloc_memory.c                                           |
-**   |     init_data(20 lines)                                  |
+**   |     init_data(19 lines)                                  |
 **   |     align(1 lines)                                       |
-**   |     alloc_large(23 lines)                                |
-**   |     alloc_little(26 lines)                               |
-**   |         MEUUUU too many lines                            |
-**   |     alloc_memory(12 lines)                               |
+**   |     init_info(3 lines)                                   |
+**   |     alloc_large(18 lines)                                |
+**   |     alloc_new_slot(20 lines)                             |
+**   |     alloc_little(25 lines)                               |
+**   |     alloc_memory(13 lines)                               |
+**   | MEUUUU too many functions                                |
 **   ------------------------------------------------------------
 **           __n__n__  /
 **    .------`-\00/-'/
@@ -79,11 +81,8 @@ static void	*alloc_large(size_t size)
 		if (!(data->ptr_large = mmap(0, sizeof(t_info) + size,
 						PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
 			return (NULL);
-//		((t_info*)data->ptr_large)->size = size;
-//		((t_info*)data->ptr_large)->next = NULL;
-//		((t_info*)data->ptr_large)->free = false;
 		init_info((t_info*)data->ptr_large, size);
-		return (data->ptr_large/* + sizeof(t_info)*/);
+		return (data->ptr_large);
 	}
 	ptr = data->ptr_large;
 	while (((t_info*)ptr)->next)
@@ -91,11 +90,8 @@ static void	*alloc_large(size_t size)
 	if (!(((t_info*)ptr)->next = mmap(0, sizeof(t_info) + size,
 					PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
 		return (NULL);
-//	((t_info*)ptr)->next->size = size;
-//	((t_info*)ptr)->next->next = NULL;
-//	((t_info*)ptr)->next->free = false;
 	init_info(((t_info*)ptr)->next, size);
-	return (((t_info*)ptr)->next/* + sizeof(t_info)*/);
+	return (((t_info*)ptr)->next);
 }
 
 /*
@@ -121,8 +117,6 @@ static int	alloc_new_slot(void *ptr, enum e_type_alloc type)
 	}
 	((t_info*)ptr)->next = new;
 	init_info((t_info*)new, 0);
-//	((t_info*)new)->size = 0;
-//	((t_info*)new)->next = NULL;
 	((t_info*)new)->free = true;
 	return (SUCCESS);
 }
@@ -139,24 +133,23 @@ static void	*alloc_little(size_t size, enum e_type_alloc type)
 	ptr = (type == TYPE_TINY) ? data->ptr_tiny : data->ptr_small;
 	total_size = (type == TYPE_TINY) ? data->size_tiny : data->size_small;
 	size_used = 0;
-//	printf("all malloc\n{\n");
+//	printf("ptr start %p\n", ptr);
 	while (((t_info*)ptr)->next)
 	{
 		size_used += ((t_info*)ptr)->size + sizeof(t_info);
-		//		printf("\tsize_used %d, %d\n", size_used, ((t_info*)ptr)->size);
-//		printf("\t%p,\n", ptr);
+//		printf("\tsize_used %d, %d\n", size_used, ((t_info*)ptr)->size);
 		ptr = ((t_info*)ptr)->next;
+//		printf("loop\n\tptr %p\n\tnext %p\n\tsize %zu\n", ((t_info*)ptr), ((t_info*)ptr)->next, ((t_info*)ptr)->size);
 	}
-//	printf("}\n");
+//	printf("size used: %zu\n", size_used);
 	if (total_size >= size_used + size + sizeof(t_info))
 	{
 		((t_info*)ptr)->next = ptr + sizeof(t_info) + ((t_info*)ptr)->size;
+//		printf("size diff %ld, %zu, %zu\n", (void*)((t_info*)ptr)->next - ptr, sizeof(t_info), ((t_info*)ptr)->size);
 //		printf("size: %d, addr: %p, next addr: %p, diff: %d\n", size, ptr, ((t_info*)ptr)->next, (void*)((t_info*)ptr)->next - ptr);
 		init_info(((t_info*)ptr)->next, size);
-//		((t_info*)ptr)->next->size = size;
-//		((t_info*)ptr)->next->next = NULL;
-//		((t_info*)ptr)->next->free = false;
-		return (((t_info*)ptr)->next/* + sizeof(t_info)*/);
+//		printf("info\n\tptr %p\n\tnext %p\n\tsize %zu\n", ((t_info*)ptr)->next, ((t_info*)ptr)->next->next, ((t_info*)ptr)->next->size);
+		return (((t_info*)ptr)->next);
 	}
 	if (alloc_new_slot(ptr, type) == ERROR)
 		return (NULL);
@@ -175,7 +168,7 @@ void		*alloc_memory(size_t size)
 	type = (size <= SIZE_MAX_SMALL) ? TYPE_SMALL : type;
 	type = (size <= SIZE_MAX_TINY) ? TYPE_TINY : type;
 	if (type == TYPE_LARGE)
-		return (alloc_large(size));
+		return (alloc_large(size) + sizeof(t_info));
 	else
-		return (alloc_little(size, type));
+		return (alloc_little(size, type) + sizeof(t_info));
 }

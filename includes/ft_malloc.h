@@ -51,8 +51,8 @@ enum				e_type_alloc
 */
 typedef struct		s_info
 {
-	size_t			size;
 	struct s_info	*next;
+	size_t			size;
 	bool			free;
 }					t_info;
 
