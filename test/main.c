@@ -58,8 +58,8 @@ int			main(int ac, char **av)
 		s1[i][7] = '\0';
 //		printf("ptr %d: %p\n", i, s1[i]);
 	}
-	malloc(1000);
-	malloc(10001);
+	(void)malloc(1000);
+	(void)malloc(10001);
 	i = -1;
 	while (++i < NB_MALLOC)
 	{
