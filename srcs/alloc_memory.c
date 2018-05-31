@@ -133,22 +133,15 @@ static void	*alloc_little(size_t size, enum e_type_alloc type)
 	ptr = (type == TYPE_TINY) ? data->ptr_tiny : data->ptr_small;
 	total_size = (type == TYPE_TINY) ? data->size_tiny : data->size_small;
 	size_used = 0;
-//	printf("ptr start %p\n", ptr);
 	while (((t_info*)ptr)->next)
 	{
 		size_used += ((t_info*)ptr)->size + sizeof(t_info);
-//		printf("\tsize_used %d, %d\n", size_used, ((t_info*)ptr)->size);
 		ptr = ((t_info*)ptr)->next;
-//		printf("loop\n\tptr %p\n\tnext %p\n\tsize %zu\n", ((t_info*)ptr), ((t_info*)ptr)->next, ((t_info*)ptr)->size);
 	}
-//	printf("size used: %zu\n", size_used);
 	if (total_size >= size_used + size + sizeof(t_info))
 	{
 		((t_info*)ptr)->next = ptr + sizeof(t_info) + ((t_info*)ptr)->size;
-//		printf("size diff %ld, %zu, %zu\n", (void*)((t_info*)ptr)->next - ptr, sizeof(t_info), ((t_info*)ptr)->size);
-//		printf("size: %d, addr: %p, next addr: %p, diff: %d\n", size, ptr, ((t_info*)ptr)->next, (void*)((t_info*)ptr)->next - ptr);
 		init_info(((t_info*)ptr)->next, size);
-//		printf("info\n\tptr %p\n\tnext %p\n\tsize %zu\n", ((t_info*)ptr)->next, ((t_info*)ptr)->next->next, ((t_info*)ptr)->next->size);
 		return (((t_info*)ptr)->next);
 	}
 	if (alloc_new_slot(ptr, type) == ERROR)

@@ -28,4 +28,5 @@
 void		free(void *ptr)
 {
 	(void)ptr;
+	printf("free %s\n", (char*)ptr);
 }
