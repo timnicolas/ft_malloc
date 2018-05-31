@@ -94,7 +94,7 @@ fclean: clean
 	$(START)
 	@printf $(RED)"-x remove $(NAME)\n"$(NORMAL)
 	@printf $(RED)"-x remove $(NAME_LINK)\n"$(NORMAL)
-	@rm -f $(NAME) $(NAME_LINK)
+	@rm -rf $(NAME) $(NAME_LINK) a.out.dSYM a.out
 	$(END)
 
 re: fclean
@@ -112,4 +112,16 @@ exec:
 	@rm a.out
 	@printf $(MAGENTA)$(BOLD)"--------------------\n"$(NORMAL)
 
-.PHONY: all clean fclean re exec
+reexec: fclean exec
+
+valg:
+	@clear
+	@make CFLAGS="-Wall -Wextra -g3"
+	$(START)
+	@printf $(YELLOW)"->create test program\n"$(EOC)
+	@$(CC) test/main.c $(INC) -Wall -Wextra -g3 $(LIBFT_LIB) $(NAME)
+	$(END)
+
+revalg: fclean valg
+
+.PHONY: all clean fclean re exec reexec
