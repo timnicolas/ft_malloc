@@ -31,7 +31,7 @@
 void	ft_putnbr_hex(int octet, int rem) { char const *base = "0123456789abcdef"; if (rem > 1) ft_putnbr_hex(octet >> 4, rem - 1); write(1, base + (octet % 16), 1); } void	sp_putchar(unsigned char const *ptr) { char const c = *ptr; if (' ' <= c && c <= '~') write(1, ptr, 1); else write(1, ".", 1); } void	print_memory(const void *addr, size_t size) { size_t i; size_t a; unsigned char const *ptr = addr; i = 0; while (i < size) { a = 0; while (a < 16 && a + i < size) { ft_putnbr_hex(*(ptr + i + a), 2); if (a % 2) write(1, " ", 1); a++; } while (a < 16) { write(1, "  ", 2); if (a % 2) write(1, " ", 1); a++; } a = 0; while (a < 16 && a + i < size) { sp_putchar(ptr + a + i); a++; } write(1, "\n", 1); i += 16; } }
 
 #define NB_MALLOC 12
-#define SIZE_1 10
+#define SIZE_1 512
 
 int			main(int ac, char **av)
 {
@@ -60,8 +60,8 @@ int			main(int ac, char **av)
 	{
 		printf("string %d: '%s' len(%zu) -> %p\n", i, s1[i], ft_strlen(s1[i]), s1[i]);
 	}
-	printf("start: %p\n", s1[0] - sizeof(t_info) - sizeof(t_info));
-	print_memory(s1[0] - sizeof(t_info) - sizeof(t_info), 200);
+	printf("start: %p\n", s1[0] - sizeof(t_info));
+	print_memory(s1[0] - sizeof(t_info), 200);
 	i = -1;
 	while (++i < NB_MALLOC)
 	{

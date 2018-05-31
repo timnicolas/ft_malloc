@@ -105,6 +105,7 @@ static int	alloc_new_slot(void *ptr, enum e_type_alloc type)
 {
 	void	*new;
 
+	printf("new block\n");
 	if (type == TYPE_TINY)
 	{
 		if (!(new = mmap(0, SIZE_ALLOC_TINY, PROT_READ | PROT_WRITE,
@@ -133,6 +134,7 @@ static int	alloc_new_slot(void *ptr, enum e_type_alloc type)
 static void	*alloc_little(size_t size, enum e_type_alloc type)
 {
 	void	*ptr;
+	t_info	*tmp;
 	size_t	size_used;
 	size_t	total_size;
 
@@ -141,16 +143,24 @@ static void	*alloc_little(size_t size, enum e_type_alloc type)
 	size_used = 0;
 	while (((t_info*)ptr)->next)
 	{
-//		if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + sizeof(t_info))
-//			break ;
+		if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + sizeof(t_info))
+			break ;
 		size_used += ((t_info*)ptr)->size + sizeof(t_info);
 		ptr = ((t_info*)ptr)->next;
 	}
-	if (total_size >= size_used + size + sizeof(t_info))
+	if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + sizeof(t_info))
 	{
-		((t_info*)ptr)->next = ptr + sizeof(t_info) + ((t_info*)ptr)->size;
-		init_info(((t_info*)ptr)->next, ptr, size);
-		return (((t_info*)ptr)->next);
+		printf("serge ptr %p size %zu\n", ptr, size);
+		((t_info*)ptr)->free = false;
+		tmp = ((t_info*)ptr)->next;
+		((t_info*)ptr)->next = ptr + sizeof(t_info) + size;
+		init_info(((t_info*)ptr)->next, ptr, ((t_info*)ptr)->size - size - sizeof(t_info));
+		((t_info*)ptr)->size = size;
+		((t_info*)ptr)->next->free = true;
+		((t_info*)ptr)->next->next = tmp;
+		if (tmp)
+			tmp->prev = ((t_info*)ptr)->next;
+		return (ptr);
 	}
 	if (alloc_new_slot(ptr, type) == ERROR)
 		return (NULL);
