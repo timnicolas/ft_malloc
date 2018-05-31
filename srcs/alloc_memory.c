@@ -6,19 +6,20 @@
 /*   By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 18:22:06 by tnicolas          #+#    #+#             */
-/*   Updated: 2018/05/30 15:26:47 by tnicolas         ###   ########.fr       */
+/*   Updated: 2018/05/31 14:42:33 by tnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 **   ____________________________________________________________
 **   | alloc_memory.c                                           |
-**   |     init_data(19 lines)                                  |
+**   |     init_data(21 lines)                                  |
 **   |     align(1 lines)                                       |
-**   |     init_info(3 lines)                                   |
+**   |     init_info(5 lines)                                   |
 **   |     alloc_large(18 lines)                                |
-**   |     alloc_new_slot(20 lines)                             |
-**   |     alloc_little(25 lines)                               |
+**   |     alloc_new_slot(23 lines)                             |
+**   |     alloc_little(32 lines)                               |
+**   |         MEUUUU too many lines                            |
 **   |     alloc_memory(13 lines)                               |
 **   | MEUUUU too many functions                                |
 **   ------------------------------------------------------------
@@ -38,24 +39,28 @@ static int	init_data()
 {
 	data = mmap(0, sizeof(data), PROT_READ | PROT_WRITE,
 			MAP_ANON | MAP_PRIVATE, -1, 0);
-	if (!(data->ptr_tiny = mmap(0, SIZE_ALLOC_TINY, PROT_READ | PROT_WRITE,
-					MAP_ANON | MAP_PRIVATE, -1, 0)))
-		return (ERROR);
-	((t_info*)data->ptr_tiny)->size = SIZE_ALLOC_TINY;
-	((t_info*)data->ptr_tiny)->next = NULL;
-	((t_info*)data->ptr_tiny)->free = true;
-	((t_info*)data->ptr_tiny)->first_in_block = true;
-	data->size_tiny = SIZE_ALLOC_TINY;
-	if (!(data->ptr_small = mmap(0, SIZE_ALLOC_SMALL, PROT_READ | PROT_WRITE,
-					MAP_ANON | MAP_PRIVATE, -1, 0)))
-		return (ERROR);
-	((t_info*)data->ptr_small)->size = SIZE_ALLOC_SMALL;
-	((t_info*)data->ptr_small)->next = NULL;
-	((t_info*)data->ptr_small)->free = true;
-	((t_info*)data->ptr_tiny)->first_in_block = true;
-	data->size_small = SIZE_ALLOC_SMALL;
+//	if (!(data->ptr_tiny = mmap(0, SIZE_ALLOC_TINY, PROT_READ | PROT_WRITE,
+//					MAP_ANON | MAP_PRIVATE, -1, 0)))
+//		return (ERROR);
+//	((t_info*)data->ptr_tiny)->size = SIZE_ALLOC_TINY;
+//	((t_info*)data->ptr_tiny)->next = NULL;
+//	((t_info*)data->ptr_tiny)->free = true;
+//	((t_info*)data->ptr_tiny)->first_in_block = true;
+//	data->size_tiny = SIZE_ALLOC_TINY;
+//	if (!(data->ptr_small = mmap(0, SIZE_ALLOC_SMALL, PROT_READ | PROT_WRITE,
+//					MAP_ANON | MAP_PRIVATE, -1, 0)))
+//		return (ERROR);
+//	((t_info*)data->ptr_small)->size = SIZE_ALLOC_SMALL;
+//	((t_info*)data->ptr_small)->next = NULL;
+//	((t_info*)data->ptr_small)->free = true;
+//	((t_info*)data->ptr_tiny)->first_in_block = true;
+//	data->size_small = SIZE_ALLOC_SMALL;
+	data->ptr_tiny = NULL;
+	data->size_tiny = 0;
+	data->ptr_small = NULL;
+	data->size_small = 0;
 	data->ptr_large = NULL;
-	printf("{\n\tptr_tiny: %p,\n\tptr_small: %p\n}\n", data->ptr_tiny, data->ptr_small);
+//	printf("{\n\tptr_tiny: %p,\n\tptr_small: %p\n}\n", data->ptr_tiny, data->ptr_small);
 	return (SUCCESS);
 }
 
@@ -129,6 +134,34 @@ static int	alloc_new_slot(void *ptr, enum e_type_alloc type)
 }
 
 /*
+ *	init first block for tiny and small allocation
+ */
+static int	init(enum e_type_alloc type)
+{
+	if (type == TYPE_TINY)
+	{
+		if (!(data->ptr_tiny = mmap(0, SIZE_ALLOC_TINY, PROT_READ | PROT_WRITE,
+						MAP_ANON | MAP_PRIVATE, -1, 0)))
+			return (ERROR);
+		init_info(data->ptr_tiny, NULL, SIZE_ALLOC_TINY - sizeof(t_info));
+		((t_info*)data->ptr_tiny)->free = true;
+		((t_info*)data->ptr_tiny)->first_in_block = true;
+		data->size_tiny = SIZE_ALLOC_TINY;
+	}
+	else if (type == TYPE_SMALL)
+	{
+		if (!(data->ptr_small = mmap(0, SIZE_ALLOC_SMALL, PROT_READ | PROT_WRITE,
+						MAP_ANON | MAP_PRIVATE, -1, 0)))
+			return (ERROR);
+		init_info(data->ptr_small, NULL, SIZE_ALLOC_SMALL - sizeof(t_info));
+		((t_info*)data->ptr_small)->free = true;
+		((t_info*)data->ptr_small)->first_in_block = true;
+		data->size_small = SIZE_ALLOC_SMALL;
+	}
+	return (SUCCESS);
+}
+
+/*
 **	allocation TINY and SMALL
 */
 static void	*alloc_little(size_t size, enum e_type_alloc type)
@@ -138,6 +171,10 @@ static void	*alloc_little(size_t size, enum e_type_alloc type)
 	size_t	size_used;
 	size_t	total_size;
 
+	if ((type == TYPE_TINY && data->ptr_tiny == NULL) ||
+			(type == TYPE_SMALL && data->ptr_small == NULL))
+		if (init(type) == ERROR)
+			return (NULL);
 	ptr = (type == TYPE_TINY) ? data->ptr_tiny : data->ptr_small;
 	total_size = (type == TYPE_TINY) ? data->size_tiny : data->size_small;
 	size_used = 0;
@@ -150,7 +187,6 @@ static void	*alloc_little(size_t size, enum e_type_alloc type)
 	}
 	if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + sizeof(t_info))
 	{
-		printf("serge ptr %p size %zu\n", ptr, size);
 		((t_info*)ptr)->free = false;
 		tmp = ((t_info*)ptr)->next;
 		((t_info*)ptr)->next = ptr + sizeof(t_info) + size;
