@@ -41,16 +41,18 @@ static int	init_data()
 	if (!(data->ptr_tiny = mmap(0, SIZE_ALLOC_TINY, PROT_READ | PROT_WRITE,
 					MAP_ANON | MAP_PRIVATE, -1, 0)))
 		return (ERROR);
-	((t_info*)data->ptr_tiny)->size = 0;
+	((t_info*)data->ptr_tiny)->size = SIZE_ALLOC_TINY;
 	((t_info*)data->ptr_tiny)->next = NULL;
 	((t_info*)data->ptr_tiny)->free = true;
+	((t_info*)data->ptr_tiny)->first_in_block = true;
 	data->size_tiny = SIZE_ALLOC_TINY;
 	if (!(data->ptr_small = mmap(0, SIZE_ALLOC_SMALL, PROT_READ | PROT_WRITE,
 					MAP_ANON | MAP_PRIVATE, -1, 0)))
 		return (ERROR);
-	((t_info*)data->ptr_small)->size = 0;
+	((t_info*)data->ptr_small)->size = SIZE_ALLOC_SMALL;
 	((t_info*)data->ptr_small)->next = NULL;
 	((t_info*)data->ptr_small)->free = true;
+	((t_info*)data->ptr_tiny)->first_in_block = true;
 	data->size_small = SIZE_ALLOC_SMALL;
 	data->ptr_large = NULL;
 	printf("{\n\tptr_tiny: %p,\n\tptr_small: %p\n}\n", data->ptr_tiny, data->ptr_small);
@@ -62,11 +64,13 @@ static size_t	align(size_t size)
 	return ((((size - 1) >> 3) << 3) + 8);
 }
 
-static void	init_info(t_info *info, size_t size)
+static void	init_info(t_info *info, t_info *prev, size_t size)
 {
 	info->size = size;
 	info->next = NULL;
+	info->prev = prev;
 	info->free = false;
+	info->first_in_block = false;
 }
 
 /*
@@ -81,7 +85,7 @@ static void	*alloc_large(size_t size)
 		if (!(data->ptr_large = mmap(0, sizeof(t_info) + size,
 						PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
 			return (NULL);
-		init_info((t_info*)data->ptr_large, size);
+		init_info((t_info*)data->ptr_large, NULL, size);
 		return (data->ptr_large);
 	}
 	ptr = data->ptr_large;
@@ -90,7 +94,7 @@ static void	*alloc_large(size_t size)
 	if (!(((t_info*)ptr)->next = mmap(0, sizeof(t_info) + size,
 					PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
 		return (NULL);
-	init_info(((t_info*)ptr)->next, size);
+	init_info(((t_info*)ptr)->next, ptr, size);
 	return (((t_info*)ptr)->next);
 }
 
@@ -116,8 +120,10 @@ static int	alloc_new_slot(void *ptr, enum e_type_alloc type)
 		data->size_tiny += SIZE_ALLOC_SMALL;
 	}
 	((t_info*)ptr)->next = new;
-	init_info((t_info*)new, 0);
+	init_info((t_info*)new, ptr, ((type == TYPE_TINY) ? SIZE_ALLOC_TINY :
+			SIZE_MAX_SMALL));
 	((t_info*)new)->free = true;
+	((t_info*)new)->first_in_block = true;
 	return (SUCCESS);
 }
 
@@ -135,13 +141,15 @@ static void	*alloc_little(size_t size, enum e_type_alloc type)
 	size_used = 0;
 	while (((t_info*)ptr)->next)
 	{
+//		if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + sizeof(t_info))
+//			break ;
 		size_used += ((t_info*)ptr)->size + sizeof(t_info);
 		ptr = ((t_info*)ptr)->next;
 	}
 	if (total_size >= size_used + size + sizeof(t_info))
 	{
 		((t_info*)ptr)->next = ptr + sizeof(t_info) + ((t_info*)ptr)->size;
-		init_info(((t_info*)ptr)->next, size);
+		init_info(((t_info*)ptr)->next, ptr, size);
 		return (((t_info*)ptr)->next);
 	}
 	if (alloc_new_slot(ptr, type) == ERROR)

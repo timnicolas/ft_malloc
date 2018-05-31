@@ -52,8 +52,10 @@ enum				e_type_alloc
 typedef struct		s_info
 {
 	struct s_info	*next;
+	struct s_info	*prev;
 	size_t			size;
 	bool			free;
+	bool			first_in_block;
 }					t_info;
 
 /*
@@ -67,6 +69,8 @@ typedef struct		s_data
 	size_t			size_small;
 	void			*ptr_large;
 }					t_data;
+
+extern t_data		*data;
 
 void				*alloc_memory(size_t size);
 
