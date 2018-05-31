@@ -54,6 +54,7 @@ typedef struct		s_info
 	struct s_info	*next;
 	struct s_info	*prev;
 	size_t			size;
+	size_t			official_size;
 	bool			free;
 	bool			first_in_block;
 }					t_info;
@@ -77,6 +78,7 @@ void				*alloc_memory(size_t size);
 void				*malloc(size_t size);
 void				*realloc(void *ptr, size_t size);
 void				free(void *ptr);
-void				show_alloc_mem();
+void				free_all(void);
+void				show_alloc_mem(void);
 
 #endif

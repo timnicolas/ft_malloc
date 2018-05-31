@@ -6,14 +6,17 @@
 /*   By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:34:53 by tnicolas          #+#    #+#             */
-/*   Updated: 2018/05/31 13:57:47 by tnicolas         ###   ########.fr       */
+/*   Updated: 2018/05/31 15:53:19 by tnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 **   ____________________________________________________________
 **   | free.c                                                   |
-**   |     free(15 lines)                                       |
+**   |     free_large(6 lines)                                  |
+**   |     free_little(51 lines)                                |
+**   |         MEUUUU too many lines                            |
+**   |     free(14 lines)                                       |
 **   ------------------------------------------------------------
 **           __n__n__  /
 **    .------`-\00/-'/
@@ -73,18 +76,18 @@ void		free_little(void *ptr, enum e_type_alloc type, t_info *info)
 				if (info == data->ptr_tiny)
 				{
 					data->ptr_tiny = info->next;
-					data->size_tiny -= SIZE_MAX_TINY;
+					data->size_tiny -= SIZE_ALLOC_TINY;
 				}
-				munmap(info, SIZE_MAX_TINY);
+				munmap(info, SIZE_ALLOC_TINY);
 			}
 			else
 			{
 				if (info == data->ptr_small)
 				{
 					data->ptr_small = info->next;
-					data->size_small -= SIZE_MAX_SMALL;
+					data->size_small -= SIZE_ALLOC_SMALL;
 				}
-				munmap(info, SIZE_MAX_SMALL);
+				munmap(info, SIZE_ALLOC_SMALL);
 			}
 		}
 	}
@@ -95,7 +98,7 @@ void		free(void *ptr)
 	enum e_type_alloc	type;
 	t_info				*info;
 
-	printf("fruit %s\n", ptr);
+//	printf("fruit %s\n", ptr);
 	if (!ptr)
 		return ;
 	info = ptr - sizeof(t_info);

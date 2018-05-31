@@ -55,6 +55,7 @@ static size_t	align(size_t size)
 static void	init_info(t_info *info, t_info *prev, size_t size)
 {
 	info->size = size;
+	info->official_size = size;
 	info->next = NULL;
 	info->prev = prev;
 	info->free = false;
@@ -189,16 +190,21 @@ static void	*alloc_little(size_t size, enum e_type_alloc type)
 void		*alloc_memory(size_t size)
 {
 	enum e_type_alloc	type;
+	size_t				official_size;
+	void				*ptr;
 
 	if (data == NULL)
 		if (init_data() == ERROR)
 			return (NULL);
+	official_size = size;
 	size = align(size);
 	type = TYPE_LARGE;
 	type = (size <= SIZE_MAX_SMALL) ? TYPE_SMALL : type;
 	type = (size <= SIZE_MAX_TINY) ? TYPE_TINY : type;
 	if (type == TYPE_LARGE)
-		return (alloc_large(size) + sizeof(t_info));
+		ptr = alloc_large(size);
 	else
-		return (alloc_little(size, type) + sizeof(t_info));
+		ptr = alloc_little(size, type);
+	((t_info*)ptr)->official_size = official_size;
+	return (ptr + sizeof(t_info));
 }
