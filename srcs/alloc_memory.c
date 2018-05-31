@@ -39,28 +39,11 @@ static int	init_data()
 {
 	data = mmap(0, sizeof(data), PROT_READ | PROT_WRITE,
 			MAP_ANON | MAP_PRIVATE, -1, 0);
-//	if (!(data->ptr_tiny = mmap(0, SIZE_ALLOC_TINY, PROT_READ | PROT_WRITE,
-//					MAP_ANON | MAP_PRIVATE, -1, 0)))
-//		return (ERROR);
-//	((t_info*)data->ptr_tiny)->size = SIZE_ALLOC_TINY;
-//	((t_info*)data->ptr_tiny)->next = NULL;
-//	((t_info*)data->ptr_tiny)->free = true;
-//	((t_info*)data->ptr_tiny)->first_in_block = true;
-//	data->size_tiny = SIZE_ALLOC_TINY;
-//	if (!(data->ptr_small = mmap(0, SIZE_ALLOC_SMALL, PROT_READ | PROT_WRITE,
-//					MAP_ANON | MAP_PRIVATE, -1, 0)))
-//		return (ERROR);
-//	((t_info*)data->ptr_small)->size = SIZE_ALLOC_SMALL;
-//	((t_info*)data->ptr_small)->next = NULL;
-//	((t_info*)data->ptr_small)->free = true;
-//	((t_info*)data->ptr_tiny)->first_in_block = true;
-//	data->size_small = SIZE_ALLOC_SMALL;
 	data->ptr_tiny = NULL;
 	data->size_tiny = 0;
 	data->ptr_small = NULL;
 	data->size_small = 0;
 	data->ptr_large = NULL;
-//	printf("{\n\tptr_tiny: %p,\n\tptr_small: %p\n}\n", data->ptr_tiny, data->ptr_small);
 	return (SUCCESS);
 }
 
