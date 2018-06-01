@@ -19,6 +19,7 @@ NAME_LINK = libft_malloc.so
 
 FILES = malloc.c \
 		realloc.c \
+		calloc.c \
 		free.c \
 		free_all.c \
 		show_alloc_mem.c \

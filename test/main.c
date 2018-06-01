@@ -61,20 +61,27 @@ int		test_1(int nb_malloc, int size_start)
 	return (SUCCESS);
 }
 
+int			test_all(void)
+{
+	printf("TEST TINY:\n");
+	if (test_1(100, 0) == ERROR)
+		return (ERROR);
+	printf("TEST SMALL:\n");
+	if (test_1(100, SIZE_MAX_TINY + 1) == ERROR)
+		return (ERROR);
+	printf("TEST LARGE:\n");
+	if (test_1(100, SIZE_MAX_SMALL + 1) == ERROR)
+		return (ERROR);
+	return (SUCCESS);
+}
+
 int			main(int ac, char **av)
 {
 
 	(void)ac;
 	(void)av;
-	printf("TEST TINY:\n");
-	if (test_1(100, 0) == ERROR)
-		return  (1);
-	printf("TEST SMALL:\n");
-	if (test_1(100, SIZE_MAX_TINY + 1) == ERROR)
-		return  (1);
-	printf("TEST LARGE:\n");
-	if (test_1(100, SIZE_MAX_SMALL + 1) == ERROR)
-		return  (1);
+//	if (test_all() == ERROR) return (1);
+	printf("%p\n", malloc(-1));
 	show_alloc_mem();
 	printf("free_all\n");
 	free_all();

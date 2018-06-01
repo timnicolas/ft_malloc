@@ -45,9 +45,8 @@ static int	print_alloc(void *ptr, size_t *total_octet)
 		}
 		ptr = ((t_info*)ptr)->next;
 	}
-	if (i > 0)
-		ft_printf(YELLOW""BOLD"\ttotal:"EOC""BOLD" %d"EOC" block ("BOLD"%zu"EOC
-				" octets)\n"EOC, i, nb_octet);
+	ft_printf(YELLOW""BOLD"\ttotal:"EOC""BOLD" %d"EOC" block ("BOLD"%zu"EOC
+			" octets)\n"EOC, i, nb_octet);
 	*total_octet += nb_octet;
 	return (i);
 }
@@ -60,6 +59,9 @@ void		show_alloc_mem(void)
 
 	total_octet = 0;
 	total = 0;
+	if (!data)
+		ft_printf(YELLOW""BOLD"total:"EOC""BOLD" %d"EOC" block ("BOLD"%zu"EOC
+				" octets)\n"EOC, total, total_octet);
 	ft_printf(YELLOW""BOLD"TINY:"EOC""BOLD" %p\n"EOC, data->ptr_tiny);
 	ptr = data->ptr_tiny;
 	total += print_alloc(ptr, &total_octet);
