@@ -51,8 +51,8 @@ int		test_1(int nb_malloc, int size_start)
 		while (++j < size_start + i)
 			s1[i][j] = 'a' + j % 26;
 		s1[i][j] = '\0';
-		printf("s1[i]: '%s'\n", s1[i]);
-		if (ft_strlen(s1[i]) != size_start + i)
+		printf("s1[i]: '%s' len(%zu)\n", s1[i], ft_strlen(s1[i]));
+		if (ft_strlen(s1[i]) != (size_t)size_start + i)
 		{
 			printf("ERROR bad size %s %s %d\n", __func__, __FILE__, __LINE__);
 			return (ERROR);
@@ -63,8 +63,6 @@ int		test_1(int nb_malloc, int size_start)
 
 int			main(int ac, char **av)
 {
-	int		i;
-	char	*(s1[NB_MALLOC]);
 
 	(void)ac;
 	(void)av;
@@ -77,6 +75,9 @@ int			main(int ac, char **av)
 	printf("TEST LARGE:\n");
 	if (test_1(100, SIZE_MAX_SMALL + 1) == ERROR)
 		return  (1);
+	show_alloc_mem();
+	printf("free_all\n");
+	free_all();
 	show_alloc_mem();
 	return (0);
 }

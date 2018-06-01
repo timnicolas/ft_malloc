@@ -165,12 +165,12 @@ static void	*alloc_little(size_t size, enum e_type_alloc type)
 	size_used = 0;
 	while (((t_info*)ptr)->next)
 	{
-		if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + sizeof(t_info))
+		if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + (sizeof(t_info) * 2))
 			break ;
 		size_used += ((t_info*)ptr)->size + sizeof(t_info);
 		ptr = ((t_info*)ptr)->next;
 	}
-	if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + sizeof(t_info))
+	if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + (sizeof(t_info) * 2))
 	{
 		((t_info*)ptr)->free = false;
 		tmp = ((t_info*)ptr)->next;
