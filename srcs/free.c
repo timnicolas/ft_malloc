@@ -6,14 +6,14 @@
 /*   By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:34:53 by tnicolas          #+#    #+#             */
-/*   Updated: 2018/05/31 15:53:19 by tnicolas         ###   ########.fr       */
+/*   Updated: 2018/05/31 17:41:31 by tnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 **   ____________________________________________________________
 **   | free.c                                                   |
-**   |     free_large(6 lines)                                  |
+**   |     free_large(7 lines)                                  |
 **   |     free_little(51 lines)                                |
 **   |         MEUUUU too many lines                            |
 **   |     free(14 lines)                                       |
@@ -31,6 +31,7 @@
 void		free_large(void *ptr, enum e_type_alloc type, t_info *info)
 {
 	(void)ptr;
+	(void)type;
 	if (info->prev)
 		info->prev->next = info->next;
 	if (info->next)

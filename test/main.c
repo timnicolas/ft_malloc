@@ -6,16 +6,16 @@
 /*   By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 14:00:31 by tnicolas          #+#    #+#             */
-/*   Updated: 2018/05/31 14:42:26 by tnicolas         ###   ########.fr       */
+/*   Updated: 2018/05/31 17:41:32 by tnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 **   ____________________________________________________________
 **   | main.c                                                   |
-**   |     ft_putnbr_hex(38 lines)                              |
+**   |     ft_putnbr_hex(44 lines)                              |
 **   |         MEUUUU too many lines                            |
-**   |     main(33 lines)                                       |
+**   |     main(39 lines)                                       |
 **   |         MEUUUU too many lines                            |
 **   ------------------------------------------------------------
 **           __n__n__  /
@@ -36,44 +36,47 @@ void	ft_putnbr_hex(int octet, int rem) { char const *base = "0123456789abcdef"; 
 #define NB_MALLOC 26
 #define SIZE_1 51
 
+int		test_1(int nb_malloc, int size_start)
+{
+	char	*(s1[nb_malloc]);
+	int		i;
+	int		j;
+
+	i = -1;
+	while (++i < nb_malloc)
+	{
+		if (!(s1[i] = malloc(size_start + i)))
+			return (ERROR);
+		j = -1;
+		while (++j < size_start + i)
+			s1[i][j] = 'a' + j % 26;
+		s1[i][j] = '\0';
+		printf("s1[i]: '%s' len(%zu)\n", s1[i], ft_strlen(s1[i]));
+		if (ft_strlen(s1[i]) != (size_t)size_start + i)
+		{
+			printf("ERROR bad size %s %s %d\n", __func__, __FILE__, __LINE__);
+			return (ERROR);
+		}
+	}
+	return (SUCCESS);
+}
+
 int			main(int ac, char **av)
 {
-	int		i;
-	char	*(s1[NB_MALLOC]);
 
 	(void)ac;
 	(void)av;
-	i = -1;
-	while (++i < NB_MALLOC)
-	{
-		if (!(s1[i] = (char*)malloc(sizeof(char) * (SIZE_1))))
-			return (1);
-		s1[i][0] = 'a' + i % 26;
-		s1[i][1] = 'a' + i % 26;
-		s1[i][2] = 'a' + i % 26;
-		s1[i][3] = 'a' + i % 26;
-		s1[i][4] = 'a' + i % 26;
-		s1[i][5] = 'a' + i % 26;
-		s1[i][6] = 'a' + i % 26;
-		s1[i][7] = '\0';
-//		printf("ptr %d: %p\n", i, s1[i]);
-	}
-	(void)malloc(1000);
-	(void)malloc(10001);
-	i = -1;
-	while (++i < NB_MALLOC)
-	{
-		printf("string %d: '%s' len(%zu) -> %p\n", i, s1[i], ft_strlen(s1[i]), s1[i]);
-	}
-	printf("start: %p\n", s1[0] - sizeof(t_info));
-	print_memory(s1[0] - sizeof(t_info), 200);
+	printf("TEST TINY:\n");
+	if (test_1(100, 0) == ERROR)
+		return  (1);
+	printf("TEST SMALL:\n");
+	if (test_1(100, SIZE_MAX_TINY + 1) == ERROR)
+		return  (1);
+	printf("TEST LARGE:\n");
+	if (test_1(100, SIZE_MAX_SMALL + 1) == ERROR)
+		return  (1);
 	show_alloc_mem();
-//	i = -1;
-//	while (++i < NB_MALLOC)
-//	{
-//		free(s1[i]);
-//	}
-	printf("end:\n");
+	printf("free_all\n");
 	free_all();
 	show_alloc_mem();
 	return (0);

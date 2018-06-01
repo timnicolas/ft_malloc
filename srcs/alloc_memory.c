@@ -6,21 +6,22 @@
 /*   By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 18:22:06 by tnicolas          #+#    #+#             */
-/*   Updated: 2018/05/31 14:42:33 by tnicolas         ###   ########.fr       */
+/*   Updated: 2018/05/31 17:41:31 by tnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 **   ____________________________________________________________
 **   | alloc_memory.c                                           |
-**   |     init_data(21 lines)                                  |
+**   |     init_data(8 lines)                                   |
 **   |     align(1 lines)                                       |
-**   |     init_info(5 lines)                                   |
+**   |     init_info(6 lines)                                   |
 **   |     alloc_large(18 lines)                                |
 **   |     alloc_new_slot(23 lines)                             |
-**   |     alloc_little(32 lines)                               |
+**   |     init(21 lines)                                       |
+**   |     alloc_little(35 lines)                               |
 **   |         MEUUUU too many lines                            |
-**   |     alloc_memory(13 lines)                               |
+**   |     alloc_memory(18 lines)                               |
 **   | MEUUUU too many functions                                |
 **   ------------------------------------------------------------
 **           __n__n__  /
@@ -164,12 +165,12 @@ static void	*alloc_little(size_t size, enum e_type_alloc type)
 	size_used = 0;
 	while (((t_info*)ptr)->next)
 	{
-		if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + sizeof(t_info))
+		if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + (sizeof(t_info) * 2))
 			break ;
 		size_used += ((t_info*)ptr)->size + sizeof(t_info);
 		ptr = ((t_info*)ptr)->next;
 	}
-	if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + sizeof(t_info))
+	if (((t_info*)ptr)->free == true && ((t_info*)ptr)->size > size + (sizeof(t_info) * 2))
 	{
 		((t_info*)ptr)->free = false;
 		tmp = ((t_info*)ptr)->next;
