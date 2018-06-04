@@ -80,8 +80,8 @@ int			main(int ac, char **av)
 
 	(void)ac;
 	(void)av;
-//	if (test_all() == ERROR) return (1);
-	printf("%p\n", malloc(-1));
+	if (test_all() == ERROR) return (1);
+//	printf("%p\n", malloc(-1));
 	show_alloc_mem();
 	printf("free_all\n");
 	free_all();
