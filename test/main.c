@@ -83,11 +83,14 @@ int			main(int ac, char **av)
 //	if (test_all() == ERROR) return (1);
 
 	char	*s;
-	s = malloc(100);
-	ft_strcpy(s, "serge ok\n");
-	s = realloc(s, 104);
-	s = realloc(s, 105);
-	s = realloc(s, 56);
+	s = malloc(8);
+	ft_strcpy(s, "1234567");
+	s = realloc(s, 10);
+	ft_printf("str: %s\n", s);
+	ft_strcpy(s, "123456789");
+	ft_printf("str: %s\n", s);
+	s = realloc(s, 8);
+	s[7] = '\0';
 	ft_printf("str: %s\n", s);
 
 	show_alloc_mem();

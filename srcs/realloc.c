@@ -6,14 +6,17 @@
 /*   By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:34:36 by tnicolas          #+#    #+#             */
-/*   Updated: 2018/05/31 17:41:31 by tnicolas         ###   ########.fr       */
+/*   Updated: 2018/06/12 18:10:48 by tnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 **   ____________________________________________________________
 **   | realloc.c                                                |
-**   |     realloc(3 lines)                                     |
+**   |     ft_bigger_realloc(26 lines)                          |
+**   |         MEUUUU too many lines                            |
+**   |     ft_smaller_realloc(23 lines)                         |
+**   |     realloc(14 lines)                                    |
 **   ------------------------------------------------------------
 **           __n__n__  /
 **    .------`-\00/-'/
@@ -25,18 +28,51 @@
 
 #include <ft_malloc.h>
 
+static void	*ft_resize_alloc(void *ptr, size_t size, t_info *inf,
+		size_t new_size)
+{
+	t_info	*new;
+
+	printf("on peut argandir\n");
+	if (inf->size + inf->next->size < new_size)
+	{
+		printf("1\n");
+		new = (void*)inf + new_size + sizeof(t_info);
+		new->first_in_block = false;
+		new->free = true;
+		new->size = (inf->size + inf->next->size) - new_size;
+		new->official_size = new->size;
+		new->prev = inf;
+		new->next = inf->next->next;
+	}
+	else
+	{
+		printf("2\n");
+		inf->size += sizeof(t_info) + inf->next->size;
+		inf->official_size = size;
+		inf->next = inf->next->next;
+		if (inf->next)
+			inf->next->prev = inf;
+	}
+	return (ptr);
+}
+
 static void	*ft_bigger_realloc(void *ptr, size_t size, t_info *inf,
 		size_t new_size)
 {
 	void	*new;
 
-	if (inf->size <= SIZE_MAX_TINY && new_size <= SIZE_MAX_TINY)
+	if (inf->next && inf->size <= SIZE_MAX_TINY && new_size <= SIZE_MAX_TINY)
 	{
-
+		if (inf->next->free == true &&
+				inf->size + sizeof(t_info) + inf->next->size > new_size)
+			return (ft_resize_alloc(ptr, size, inf, new_size));
 	}
-	else if (inf->size <= SIZE_MAX_SMALL && new_size <= SIZE_MAX_SMALL)
+	else if (inf->next && inf->size <= SIZE_MAX_SMALL && new_size <= SIZE_MAX_SMALL)
 	{
-
+		if (inf->next->free == true &&
+				inf->size + sizeof(t_info) + inf->next->size > new_size)
+			return (ft_resize_alloc(ptr, size, inf, new_size));
 	}
 	if (!(new = malloc(size)))
 		return (NULL);
