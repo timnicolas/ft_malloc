@@ -73,6 +73,7 @@ typedef struct		s_data
 
 extern t_data		*data;
 
+size_t				align(size_t size);
 void				*alloc_memory(size_t size);
 
 void				*malloc(size_t size);

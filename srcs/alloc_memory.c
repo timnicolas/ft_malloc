@@ -6,7 +6,7 @@
 /*   By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/25 18:22:06 by tnicolas          #+#    #+#             */
-/*   Updated: 2018/05/31 17:41:31 by tnicolas         ###   ########.fr       */
+/*   Updated: 2018/06/12 16:55:31 by tnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static int	init_data()
 	return (SUCCESS);
 }
 
-static size_t	align(size_t size)
+size_t		align(size_t size)
 {
 	return ((((size - 1) >> 3) << 3) + 8);
 }
