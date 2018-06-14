@@ -6,15 +6,16 @@
 /*   By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:34:36 by tnicolas          #+#    #+#             */
-/*   Updated: 2018/06/12 18:10:48 by tnicolas         ###   ########.fr       */
+/*   Updated: 2018/06/14 15:28:23 by tnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 **   ____________________________________________________________
 **   | realloc.c                                                |
-**   |     ft_bigger_realloc(26 lines)                          |
+**   |     ft_resize_alloc(26 lines)                            |
 **   |         MEUUUU too many lines                            |
+**   |     ft_bigger_realloc(20 lines)                          |
 **   |     ft_smaller_realloc(23 lines)                         |
 **   |     realloc(14 lines)                                    |
 **   ------------------------------------------------------------
@@ -44,6 +45,7 @@ static void	*ft_resize_alloc(void *ptr, size_t size, t_info *inf,
 		new->official_size = new->size;
 		new->prev = inf;
 		new->next = inf->next->next;
+		inf->next = new;
 	}
 	else
 	{

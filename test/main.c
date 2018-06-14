@@ -82,16 +82,43 @@ int			main(int ac, char **av)
 	(void)av;
 //	if (test_all() == ERROR) return (1);
 
-	char	*s;
-	s = malloc(8);
-	ft_strcpy(s, "1234567");
-	s = realloc(s, 10);
-	ft_printf("str: %s\n", s);
-	ft_strcpy(s, "123456789");
-	ft_printf("str: %s\n", s);
-	s = realloc(s, 8);
-	s[7] = '\0';
-	ft_printf("str: %s\n", s);
+//	char	*s;
+//	s = malloc(8);
+//	ft_strcpy(s, "1234567");
+//	s = realloc(s, 10);
+//	ft_printf("str: %s\n", s);
+//	ft_strcpy(s, "123456789");
+//	ft_printf("str: %s\n", s);
+//	s = realloc(s, 8);
+//	s[7] = '\0';
+//	ft_printf("str: %s\n", s);
+
+//	char	*s1;
+//	char	*s2;
+//	char	*s3;
+//	s2 = malloc(8);
+//	ft_strcpy(s2, "1234567");
+//	s3 = malloc(8);
+//	ft_strcpy(s3, "abcdefg");
+//	printf("%p %s\t%s\n", s2, s2, s3);
+//	s2 = realloc(s2, 9);
+//	printf("%p %s\t%s\n", s2, s2, s3);
+//	s1 = malloc(8);
+//	printf("%p\n", s1);
+
+//	char	*s1;
+//	s1 = malloc(8);
+//	show_alloc_mem();
+//	s1 = realloc(s1, 16);
+
+	char	*s1;
+	char	*s2;
+	s1 = malloc(32);
+	s2 = malloc(32);
+	printf("%p\t%p\n", s1, s2);
+	free(s1);
+	s1 = malloc(8);
+	printf("%p\t%p\n", s1, s2);
 
 	show_alloc_mem();
 	printf("free_all\n");
