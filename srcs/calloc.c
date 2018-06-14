@@ -21,7 +21,6 @@ void		*calloc(size_t count, size_t size)
 	if (!(ptr = malloc(count * size)))
 		return (NULL);
 	total_sz = (((count * size) - 1) >> 3) + 1;
-	printf("%d\n", total_sz);
 	i = -1;
 	while (++i < total_sz)
 		((int64_t*)ptr)[i] = 0;

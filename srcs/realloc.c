@@ -34,10 +34,10 @@ static void	*ft_resize_alloc(void *ptr, size_t size, t_info *inf,
 {
 	t_info	*new;
 
-	printf("on peut argandir\n");
+//	printf("on peut argandir\n");
 	if (inf->size + inf->next->size < new_size)
 	{
-		printf("1\n");
+//		printf("1\n");
 		new = (void*)inf + new_size + sizeof(t_info);
 		new->first_in_block = false;
 		new->free = true;
@@ -49,7 +49,7 @@ static void	*ft_resize_alloc(void *ptr, size_t size, t_info *inf,
 	}
 	else
 	{
-		printf("2\n");
+//		printf("2\n");
 		inf->size += sizeof(t_info) + inf->next->size;
 		inf->official_size = size;
 		inf->next = inf->next->next;
@@ -63,22 +63,28 @@ static void	*ft_bigger_realloc(void *ptr, size_t size, t_info *inf,
 		size_t new_size)
 {
 	void	*new;
+	int		i;
 
+//	printf("%zu\t%zu\n", new_size, SIZE_MAX_TINY);
 	if (inf->next && inf->size <= SIZE_MAX_TINY && new_size <= SIZE_MAX_TINY)
 	{
 		if (inf->next->free == true &&
 				inf->size + sizeof(t_info) + inf->next->size > new_size)
 			return (ft_resize_alloc(ptr, size, inf, new_size));
 	}
-	else if (inf->next && inf->size <= SIZE_MAX_SMALL && new_size <= SIZE_MAX_SMALL)
+	else if (inf->next && inf->size <= SIZE_MAX_SMALL && SIZE_MAX_SMALL < new_size && new_size <= SIZE_MAX_SMALL)
 	{
 		if (inf->next->free == true &&
 				inf->size + sizeof(t_info) + inf->next->size > new_size)
 			return (ft_resize_alloc(ptr, size, inf, new_size));
 	}
+//	printf("on re malloc\n");
 	if (!(new = malloc(size)))
 		return (NULL);
-	ft_memcpy(new, ptr, inf->size);
+//	ft_memcpy(new, ptr, inf->size);
+	i = -1;
+	while (++i < (int)(inf->size >> 3))
+		((int64_t*)new)[i] = ((int64_t*)ptr)[i];
 	free(ptr);
 	return (new);
 }
@@ -123,7 +129,6 @@ void		*realloc(void *ptr, size_t size)
 		return (ft_bigger_realloc(ptr, size, inf, new_size));
 	else if (inf->size > new_size + sizeof(t_info))
 		return (ft_smaller_realloc(ptr, size, inf, new_size));
-//	ft_printf("same malloc\n");
 	inf->official_size = size;
 	return (ptr);
 }

@@ -29,6 +29,7 @@ void		*malloc(size_t size)
 {
 	void	*ptr;
 
+//	printf("malloc(%zu)\n", size);
 	ptr = alloc_memory(size);
 	return (ptr);
 }
