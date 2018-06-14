@@ -111,18 +111,27 @@ int			main(int ac, char **av)
 //	show_alloc_mem();
 //	s1 = realloc(s1, 16);
 
-	char	*s1;
-	char	*s2;
-	s1 = malloc(32);
-	s2 = malloc(32);
-	printf("%p\t%p\n", s1, s2);
-	free(s1);
-	s1 = malloc(8);
-	printf("%p\t%p\n", s1, s2);
+//	char	*s1;
+//	char	*s2;
+//	s1 = malloc(200);
+//	s2 = malloc(32);
+//	printf("%p\t%p\n", s1, s2);
+//	free(s1);
+//	s1 = malloc(8);
+//	printf("%p\t%p\n", s1, s2);
 
-	show_alloc_mem();
-	printf("free_all\n");
-	free_all();
-	show_alloc_mem();
+//	char	*s1;
+//	s1 = malloc(30);
+//	ft_strcpy(s1, "abcdefghijklmnopqrstuvwxyz");
+//	s1 = realloc(s1, SIZE_MAX_TINY + 100);
+//	printf("%s\n", s1);
+
+//	char	*s1;
+//	s1 = malloc(100);
+//
+//	show_alloc_mem();
+//	printf("free_all\n");
+//	free_all();
+//	show_alloc_mem();
 	return (0);
 }
