@@ -1,4 +1,4 @@
-# include <ft_malloc.h>
+#include <ft_malloc.h>
 
 int			main(int ac, char **av)
 {
@@ -8,7 +8,7 @@ int			main(int ac, char **av)
 	{
 		addr = (char*)malloc(1024);
 		addr[0] = 42;
-		free(addr);
+//		free(addr);
 		i++;
 	}
 	show_alloc_mem();
