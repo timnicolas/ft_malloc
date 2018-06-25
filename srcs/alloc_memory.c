@@ -95,7 +95,7 @@ static int	alloc_new_slot(void *ptr, enum e_type_alloc type)
 {
 	void	*new;
 
-	printf("new block\n");
+//	printf("new block\n");
 	if (type == TYPE_TINY)
 	{
 		if (!(new = mmap(0, SIZE_ALLOC_TINY, PROT_READ | PROT_WRITE,
@@ -123,6 +123,7 @@ static int	alloc_new_slot(void *ptr, enum e_type_alloc type)
  */
 static int	init(enum e_type_alloc type)
 {
+//	printf("new block\n");
 	if (type == TYPE_TINY)
 	{
 		if (!(data->ptr_tiny = mmap(0, SIZE_ALLOC_TINY, PROT_READ | PROT_WRITE,
@@ -207,5 +208,6 @@ void		*alloc_memory(size_t size)
 	else
 		ptr = alloc_little(size, type);
 	((t_info*)ptr)->official_size = official_size;
+//	printf("%p\n", ptr + sizeof(t_info));
 	return (ptr + sizeof(t_info));
 }

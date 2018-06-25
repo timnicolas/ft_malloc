@@ -106,7 +106,7 @@ exec:
 	@make
 	$(START)
 	@printf $(YELLOW)"->create test program\n"$(EOC)
-	$(CC) test/main.c $(INC) $(CFLAGS) $(LIBFT_LIB) $(NAME)
+	@$(CC) test/main.c $(INC) $(CFLAGS) $(LIBFT_LIB) $(NAME)
 	$(END)
 	@printf $(MAGENTA)$(BOLD)"EXEC FT_MALLOC\n--------------------\n"$(NORMAL)
 	@./a.out

@@ -1,16 +1,22 @@
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
 
-int			main(int ac, char **av)
+#define M (1024 * 1024)
+
+void print(char *s)
 {
-	int		i = 0;
+	write(1, s, strlen(s));
+}
+
+int main()
+{
 	char *addr;
-	while (i < 1024)
-	{
-		addr = (char*)malloc(1024);
-		addr[0] = 42;
-//		free(addr);
-		i++;
-	}
-//	show_alloc_mem();
+
+	addr = malloc(16);
+	free(NULL);
+	free((void *)addr + 5);
+	if (realloc((void *)addr + 5, 10) == NULL)
+		print("Bonjours\n");
 	return (0);
 }
