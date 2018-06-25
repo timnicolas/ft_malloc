@@ -63,21 +63,21 @@ int		test_malloc_1(int nb_malloc, int size_start)
 int			test_malloc(void)
 {
 	ft_printf("TEST MALLOC:\n");
-	ft_printf("\tTINY: ");
+	ft_printf("\tTINY:\t");
 	if (test_malloc_1(100, 0) == ERROR)
 	{
 		ft_printf("{red}ERROR{eoc}\n");
 		return (ERROR);
 	}
 	ft_printf("{green}OK{eoc}\n");
-	ft_printf("\tSMALL: ");
+	ft_printf("\tSMALL:\t");
 	if (test_malloc_1(100, SIZE_MAX_TINY + 1) == ERROR)
 	{
 		ft_printf("{red}ERROR{eoc}\n");
 		return (ERROR);
 	}
 	ft_printf("{green}OK{eoc}\n");
-	ft_printf("\tLARGE: ");
+	ft_printf("\tLARGE:\t");
 	if (test_malloc_1(100, SIZE_MAX_SMALL + 1) == ERROR)
 	{
 		ft_printf("{red}ERROR{eoc}\n");
@@ -90,7 +90,7 @@ int			test_malloc(void)
 int			basic_realloc()
 {
 	char	*s;
-	ft_printf("\tBASIC: ");
+	ft_printf("\tBASIC:\t");
 	if (!(s = malloc(8)))
 	{
 		ft_printf("{red}ERROR{eoc}\n");
@@ -154,35 +154,75 @@ int		test_realloc_1(int nb_malloc, int size_start)
 	return (SUCCESS);
 }
 
+int			test_realloc_hard()
+{
+	char	*s1;
+	size_t	size;
+
+	size = 100;
+	if (!(s1 = malloc(size)))
+		return (ERROR);
+	if (get_alloc_size(s1) != size)
+		return (ERROR);
+	size = 1000;
+	if (!(s1 = realloc(s1, size)))
+		return (ERROR);
+	if (get_alloc_size(s1) != size)
+		return (ERROR);
+	size = 10000;
+	if (!(s1 = realloc(s1, size)))
+		return (ERROR);
+	if (get_alloc_size(s1) != size)
+		return (ERROR);
+	size = 100;
+	if (!(s1 = realloc(s1, size)))
+		return (ERROR);
+	if (get_alloc_size(s1) != size)
+		return (ERROR);
+	size = 10000;
+	if (!(s1 = realloc(s1, size)))
+		return (ERROR);
+	if (get_alloc_size(s1) != size)
+		return (ERROR);
+	return (SUCCESS);
+}
+
 int			test_realloc()
 {
 	ft_printf("TEST REALLOC:\n");
 	if (basic_realloc() == ERROR)
 		return (ERROR);
-	ft_printf("\tTINY: ");
+	ft_printf("\tTINY:\t");
 	if (test_realloc_1(100, 0) == ERROR)
 	{
 		ft_printf("{red}ERROR{eoc}\n");
 		return (ERROR);
 	}
 	ft_printf("{green}OK{eoc}\n");
-	ft_printf("\tSMALL: ");
+	ft_printf("\tSMALL:\t");
 	if (test_realloc_1(100, SIZE_MAX_TINY + 1) == ERROR)
 	{
 		ft_printf("{red}ERROR{eoc}\n");
 		return (ERROR);
 	}
 	ft_printf("{green}OK{eoc}\n");
-	ft_printf("\tLARGE: ");
+	ft_printf("\tLARGE:\t");
 	if (test_realloc_1(100, SIZE_MAX_SMALL + 1) == ERROR)
 	{
 		ft_printf("{red}ERROR{eoc}\n");
 		return (ERROR);
 	}
 	ft_printf("{green}OK{eoc}\n");
-	ft_printf("\tALL: ");
+	ft_printf("\tALL:\t");
 	if (test_realloc_1(100, SIZE_MAX_TINY - 50) == ERROR ||
 			test_realloc_1(100, SIZE_MAX_SMALL - 50) == ERROR)
+	{
+		ft_printf("{red}ERROR{eoc}\n");
+		return (ERROR);
+	}
+	ft_printf("{green}OK{eoc}\n");
+	ft_printf("\tHARD:\t");
+	if (test_realloc_hard() == ERROR)
 	{
 		ft_printf("{red}ERROR{eoc}\n");
 		return (ERROR);
@@ -193,7 +233,9 @@ int			test_realloc()
 
 int			main(int ac, char **av)
 {
+	int		err;
 
+	err = SUCCESS;
 	(void)ac;
 	(void)av;
 	if (test_malloc() == ERROR) {ft_printf("ERROR malloc\n"); return (1);}
