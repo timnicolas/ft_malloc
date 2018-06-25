@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_alloc_size.c                                   :+:      :+:    :+:   */
+/*   is_allocated.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/25 17:52:54 by tnicolas          #+#    #+#             */
-/*   Updated: 2018/06/25 18:02:21 by tnicolas         ###   ########.fr       */
+/*   Created: 2018/06/25 18:23:20 by tnicolas          #+#    #+#             */
+/*   Updated: 2018/06/25 18:23:44 by tnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 /*
 **   ____________________________________________________________
-**   | get_alloc_size.c                                         |
-**   |     check_error(23 lines)                                |
-**   |     get_alloc_size(3 lines)                              |
+**   | is_allocated.c                                           |
+**   |     is_allocated(20 lines)                               |
 **   ------------------------------------------------------------
 **           __n__n__  /
 **    .------`-\00/-'/
@@ -26,14 +25,26 @@
 
 #include <ft_malloc.h>
 
-size_t		get_alloc_size(void *ptr)
+int			is_allocated(void *ptr)
 {
-	if (is_allocated(ptr) == ERROR)
+	t_info	*tmp;
+	int		i;
+
+	i = -1;
+	while (++i < 3)
 	{
-		ft_printf("{red}{bold}ERROR: {eoc}{yellow}get_alloc_size({eoc}ptr=%p"
-				"{yellow}){eoc}\n\tcan't return size: pointer not allocated\n",
-				ptr);
-		return (0);
+		if (i == 0)
+			tmp = g_data->ptr_tiny;
+		else if (i == 1)
+			tmp = g_data->ptr_small;
+		else if (i == 2)
+			tmp = g_data->ptr_large;
+		while (tmp)
+		{
+			if (((void*)tmp) + sizeof(t_info) == ptr)
+				return (SUCCESS);
+			tmp = tmp->next;
+		}
 	}
-	return (((t_info*)(ptr - sizeof(t_info)))->official_size);
+	return (ERROR);
 }
