@@ -6,7 +6,7 @@
 /*   By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/24 13:34:53 by tnicolas          #+#    #+#             */
-/*   Updated: 2018/06/25 16:06:22 by tnicolas         ###   ########.fr       */
+/*   Updated: 2018/06/25 18:24:15 by tnicolas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 **   ____________________________________________________________
 **   | free.c                                                   |
 **   |     free_large(7 lines)                                  |
-**   |     free_little_2(28 lines)                              |
-**   |         MEUUUU too many lines                            |
-**   |     free_little(24 lines)                                |
-**   |     check_error(22 lines)                                |
-**   |     free(15 lines)                                       |
+**   |     free_little_2(25 lines)                              |
+**   |     free_little(25 lines)                                |
+**   |     check_error(20 lines)                                |
+**   |     free(19 lines)                                       |
 **   ------------------------------------------------------------
 **           __n__n__  /
 **    .------`-\00/-'/
@@ -99,32 +98,6 @@ void		free_little(void *ptr, enum e_type_alloc type, t_info *info)
 		free_little_2(type, info);
 }
 
-static int	check_error(void *ptr)
-{
-	t_info	*tmp;
-	int		i;
-
-	i = -1;
-	while (++i < 3)
-	{
-		if (i == 0)
-			tmp = g_data->ptr_tiny;
-		else if (i == 1)
-			tmp = g_data->ptr_small;
-		else if (i == 2)
-			tmp = g_data->ptr_large;
-		while (tmp)
-		{
-			if (((void*)tmp) + sizeof(t_info) == ptr)
-				return (SUCCESS);
-			tmp = tmp->next;
-		}
-	}
-	ft_printf("{red}{bold}ERROR: {eoc}{yellow}free({eoc}ptr=%p{yellow}){eoc}\n"
-			"\tpointer being freed was not allocated\n", ptr);
-	return (ERROR);
-}
-
 void		free(void *ptr)
 {
 	enum e_type_alloc	type;
@@ -132,8 +105,12 @@ void		free(void *ptr)
 
 	if (!ptr)
 		return ;
-	if (check_error(ptr) == ERROR)
+	if (is_allocated(ptr) == ERROR)
+	{
+		ft_printf("{red}{bold}ERROR: {eoc}{yellow}free({eoc}ptr=%p{yellow})"
+				"{eoc}\n\tpointer being freed was not allocated\n", ptr);
 		return ;
+	}
 	info = ptr - sizeof(t_info);
 	type = TYPE_LARGE;
 	type = (info->size <= SIZE_MAX_SMALL) ? TYPE_SMALL : type;
