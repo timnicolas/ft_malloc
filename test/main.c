@@ -82,6 +82,7 @@ int			main(int ac, char **av)
 	(void)av;
 	if (test_all() == ERROR) return (1);
 
+
 //	char	*s;
 //	s = malloc(8);
 //	ft_strcpy(s, "1234567");

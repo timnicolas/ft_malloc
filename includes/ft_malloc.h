@@ -13,12 +13,11 @@
 #ifndef FT_MALLOC_H
 # define FT_MALLOC_H
 
-# include <stdio.h>///////////////
 # include <stddef.h>
 # include <stdbool.h>
 # include <unistd.h>
 # include <sys/mman.h>
-# include <libft.h>
+# include "../libft/includes/libft.h"
 
 # define SUCCESS 0
 # define ERROR   1
@@ -36,8 +35,8 @@
 # define SIZE_ALLOC_SMALL ((size_t)(100 * getpagesize()))
 
 /*
- *	type of allocation (used in function alloc little)
- */
+**	type of allocation (used in function alloc little)
+*/
 enum				e_type_alloc
 {
 	TYPE_TINY, TYPE_SMALL, TYPE_LARGE
@@ -60,7 +59,7 @@ typedef struct		s_info
 }					t_info;
 
 /*
-**	global variable data is used to save pointers from malloc
+**	global variable g_data is used to save pointers from malloc
 */
 typedef struct		s_data
 {
@@ -71,9 +70,12 @@ typedef struct		s_data
 	void			*ptr_large;
 }					t_data;
 
-extern t_data		*data;
+extern t_data		*g_data;
 
 size_t				align(size_t size);
+void				init_info_alloc(t_info *info, t_info *prev, size_t size);
+void				*alloc_little(size_t size, enum e_type_alloc type);
+void				*alloc_large(size_t size);
 void				*alloc_memory(size_t size);
 
 void				*malloc(size_t size);
