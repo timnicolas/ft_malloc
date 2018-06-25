@@ -80,18 +80,8 @@ int			main(int ac, char **av)
 
 	(void)ac;
 	(void)av;
-//	if (test_all() == ERROR) return (1);
+	if (test_all() == ERROR) return (1);
 
-	int		i = 0;
-	char *addr;
-	while (i < 10)
-	{
-		addr = (char*)malloc(1024);
-		addr[0] = 42;
-//		free(addr);
-		i++;
-	}
-//	printf("%p\n%p\n", s1, s2);
 
 //	char	*s;
 //	s = malloc(8);
@@ -140,9 +130,9 @@ int			main(int ac, char **av)
 //	char	*s1;
 //	s1 = malloc(100);
 //
-//	show_alloc_mem();
-//	printf("free_all\n");
-//	free_all();
-//	show_alloc_mem();
+	show_alloc_mem();
+	printf("free_all\n");
+	free_all();
+	show_alloc_mem();
 	return (0);
 }

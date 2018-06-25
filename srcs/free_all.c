@@ -58,12 +58,12 @@ static void	free_large(void *ptr)
 
 void		free_all(void)
 {
-	free_little(data->ptr_tiny, TYPE_TINY);
-	data->ptr_tiny = NULL;
-	data->size_tiny = 0;
-	free_little(data->ptr_small, TYPE_SMALL);
-	data->ptr_small = NULL;
-	data->size_small = 0;
-	free_large(data->ptr_large);
-	data->ptr_large = NULL;
+	free_little(g_data->ptr_tiny, TYPE_TINY);
+	g_data->ptr_tiny = NULL;
+	g_data->size_tiny = 0;
+	free_little(g_data->ptr_small, TYPE_SMALL);
+	g_data->ptr_small = NULL;
+	g_data->size_small = 0;
+	free_large(g_data->ptr_large);
+	g_data->ptr_large = NULL;
 }
