@@ -19,13 +19,13 @@ NAME_LINK = libft_malloc.so
 
 FILES = malloc.c \
 		realloc.c \
+		calloc.c \
 		free.c \
 		free_all.c \
 		show_alloc_mem.c \
 		alloc_memory.c
 
 HFILES = includes/ft_malloc.h \
-		 includes/ft_malloc.h \
 		 libft/includes/libft.h
 
 LIBFT_DIR = libft/
@@ -106,7 +106,7 @@ exec:
 	@make
 	$(START)
 	@printf $(YELLOW)"->create test program\n"$(EOC)
-	@$(CC) test/main.c $(INC) $(CFLAGS) $(LIBFT_LIB) $(NAME)
+	$(CC) test/main.c $(INC) $(CFLAGS) $(LIBFT_LIB) $(NAME)
 	$(END)
 	@printf $(MAGENTA)$(BOLD)"EXEC FT_MALLOC\n--------------------\n"$(NORMAL)
 	@./a.out

@@ -61,20 +61,74 @@ int		test_1(int nb_malloc, int size_start)
 	return (SUCCESS);
 }
 
+int			test_all(void)
+{
+	printf("TEST TINY:\n");
+	if (test_1(100, 0) == ERROR)
+		return (ERROR);
+	printf("TEST SMALL:\n");
+	if (test_1(100, SIZE_MAX_TINY + 1) == ERROR)
+		return (ERROR);
+	printf("TEST LARGE:\n");
+	if (test_1(100, SIZE_MAX_SMALL + 1) == ERROR)
+		return (ERROR);
+	return (SUCCESS);
+}
+
 int			main(int ac, char **av)
 {
 
 	(void)ac;
 	(void)av;
-	printf("TEST TINY:\n");
-	if (test_1(100, 0) == ERROR)
-		return  (1);
-	printf("TEST SMALL:\n");
-	if (test_1(100, SIZE_MAX_TINY + 1) == ERROR)
-		return  (1);
-	printf("TEST LARGE:\n");
-	if (test_1(100, SIZE_MAX_SMALL + 1) == ERROR)
-		return  (1);
+	if (test_all() == ERROR) return (1);
+
+//	char	*s;
+//	s = malloc(8);
+//	ft_strcpy(s, "1234567");
+//	s = realloc(s, 10);
+//	ft_printf("str: %s\n", s);
+//	ft_strcpy(s, "123456789");
+//	ft_printf("str: %s\n", s);
+//	s = realloc(s, 8);
+//	s[7] = '\0';
+//	ft_printf("str: %s\n", s);
+
+//	char	*s1;
+//	char	*s2;
+//	char	*s3;
+//	s2 = malloc(8);
+//	ft_strcpy(s2, "1234567");
+//	s3 = malloc(8);
+//	ft_strcpy(s3, "abcdefg");
+//	printf("%p %s\t%s\n", s2, s2, s3);
+//	s2 = realloc(s2, 9);
+//	printf("%p %s\t%s\n", s2, s2, s3);
+//	s1 = malloc(8);
+//	printf("%p\n", s1);
+
+//	char	*s1;
+//	s1 = malloc(8);
+//	show_alloc_mem();
+//	s1 = realloc(s1, 16);
+
+//	char	*s1;
+//	char	*s2;
+//	s1 = malloc(200);
+//	s2 = malloc(32);
+//	printf("%p\t%p\n", s1, s2);
+//	free(s1);
+//	s1 = malloc(8);
+//	printf("%p\t%p\n", s1, s2);
+
+//	char	*s1;
+//	s1 = malloc(30);
+//	ft_strcpy(s1, "abcdefghijklmnopqrstuvwxyz");
+//	s1 = realloc(s1, SIZE_MAX_TINY + 100);
+//	printf("%s\n", s1);
+
+//	char	*s1;
+//	s1 = malloc(100);
+//
 	show_alloc_mem();
 	printf("free_all\n");
 	free_all();

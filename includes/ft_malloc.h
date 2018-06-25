@@ -26,14 +26,14 @@
 /*
 **	size max = max size of tiny and small allocation
 */
-# define SIZE_MAX_TINY  512
+# define SIZE_MAX_TINY  256
 # define SIZE_MAX_SMALL 4096
 
 /*
 **	size alloc = SIZE_ALLOC * getpagesize(); (4096)
 */
-# define SIZE_ALLOC_TINY  ((size_t)(1 * getpagesize()))
-# define SIZE_ALLOC_SMALL ((size_t)(8 * getpagesize()))
+# define SIZE_ALLOC_TINY  ((size_t)(8 * getpagesize()))
+# define SIZE_ALLOC_SMALL ((size_t)(100 * getpagesize()))
 
 /*
  *	type of allocation (used in function alloc little)
@@ -73,9 +73,11 @@ typedef struct		s_data
 
 extern t_data		*data;
 
+size_t				align(size_t size);
 void				*alloc_memory(size_t size);
 
 void				*malloc(size_t size);
+void				*calloc(size_t count, size_t size);
 void				*realloc(void *ptr, size_t size);
 void				free(void *ptr);
 void				free_all(void);
