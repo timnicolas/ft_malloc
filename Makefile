@@ -163,7 +163,8 @@ FILES = libft/srcs/ft_strlen.c \
 		srcs/free_all.c \
 		srcs/show_alloc_mem.c \
 		srcs/alloc_memory.c \
-		srcs/alloc_memory_2.c
+		srcs/alloc_memory_2.c \
+		srcs/get_alloc_size.c
 
 
 HFILES = includes/ft_malloc.h \
