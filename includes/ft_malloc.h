@@ -81,10 +81,10 @@ void				*alloc_memory(size_t size);
 void				*malloc(size_t size);
 void				*calloc(size_t count, size_t size);
 void				*realloc(void *ptr, size_t size);
+void				free(void *ptr);
 int					is_allocated(void *ptr);
 size_t				get_alloc_size(void *ptr);
 void				print_alloc_mem(void *ptr, size_t size);
-void				free(void *ptr);
 void				free_all(void);
 void				show_alloc_mem(void);
 
