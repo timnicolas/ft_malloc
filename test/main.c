@@ -242,7 +242,7 @@ int			main(int ac, char **av)
 	if (test_realloc() == ERROR) {ft_printf("ERROR realloc\n"); return (1);}
 
 //	show_alloc_mem();
-	printf("free_all\n");
+	ft_printf("free_all\n");
 	free_all();
 	show_alloc_mem();
 	return (0);

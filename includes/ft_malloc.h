@@ -17,7 +17,7 @@
 # include <stdbool.h>
 # include <unistd.h>
 # include <sys/mman.h>
-# include "../libft/includes/libft.h"
+# include <libft.h>
 
 # define SUCCESS 0
 # define ERROR   1
