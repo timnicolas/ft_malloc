@@ -51,4 +51,8 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# added by sergeVim
+*.swp
+*.vim
 .DS_Store
+.cscope.out
