@@ -6,13 +6,15 @@
 #    By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/24 13:52:33 by tnicolas          #+#    #+#              #
-#    Updated: 2019/03/20 17:58:21 by tnicolas         ###   ########.fr        #
+#    Updated: 2019/03/20 18:09:05 by tnicolas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
+
+EXEC_FILE = test/test.c
 
 NAME = libft_malloc_$(HOSTTYPE).so
 NAME_LINK = libft_malloc.so
@@ -245,7 +247,7 @@ exec:
 	@make
 	$(START)
 	@printf $(YELLOW)"->create test program\n"$(NORMAL)
-	@$(CC) test/main.c $(INC) $(CFLAGS) $(NAME)
+	@$(CC) $(EXEC_FILE) $(INC) $(CFLAGS) $(NAME)
 	$(END)
 	@printf $(MAGENTA)$(BOLD)"EXEC FT_MALLOC\n--------------------\n"$(NORMAL)
 	@./a.out
