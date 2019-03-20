@@ -6,7 +6,7 @@
 #    By: tnicolas <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/05/24 13:52:33 by tnicolas          #+#    #+#              #
-#    Updated: 2018/05/24 13:52:33 by tnicolas         ###   ########.fr        #
+#    Updated: 2019/03/20 17:58:21 by tnicolas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -244,7 +244,7 @@ exec:
 	@clear
 	@make
 	$(START)
-	@printf $(YELLOW)"->create test program\n"$(EOC)
+	@printf $(YELLOW)"->create test program\n"$(NORMAL)
 	@$(CC) test/main.c $(INC) $(CFLAGS) $(NAME)
 	$(END)
 	@printf $(MAGENTA)$(BOLD)"EXEC FT_MALLOC\n--------------------\n"$(NORMAL)
@@ -258,7 +258,7 @@ valg:
 	@clear
 	@make CFLAGS="-Wall -Wextra -g3"
 	$(START)
-	@printf $(YELLOW)"->create test program\n"$(EOC)
+	@printf $(YELLOW)"->create test program\n"$(NORMAL)
 	@$(CC) test/main.c $(INC) -Wall -Wextra -g3 $(NAME)
 	$(END)
 
