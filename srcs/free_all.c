@@ -27,7 +27,7 @@
 
 #include <ft_malloc.h>
 
-static void	free_little(void *ptr, enum e_type_alloc type)
+static void	free_all_little(void *ptr, enum e_type_alloc type)
 {
 	void	*to_free;
 
@@ -39,12 +39,19 @@ static void	free_little(void *ptr, enum e_type_alloc type)
 	{
 		if (((t_info*)ptr)->first_in_block == true)
 			to_free = ptr;
+		else
+			to_free = NULL;
 		ptr = ((t_info*)ptr)->prev;
-		munmap(to_free, (type == TYPE_TINY) ? SIZE_ALLOC_TINY : SIZE_MAX_SMALL);
+		if (to_free != NULL)
+		{
+			// ft_putstr((type == TYPE_TINY) ? "<<< call munmap on tiny\n" : "<<< call munmap on small\n");
+			// ft_putnbr(to_free);
+			munmap(to_free, (type == TYPE_TINY) ? SIZE_ALLOC_TINY : SIZE_MAX_SMALL);
+		}
 	}
 }
 
-static void	free_large(void *ptr)
+static void	free_all_large(void *ptr)
 {
 	void	*to_free;
 
@@ -58,12 +65,13 @@ static void	free_large(void *ptr)
 
 void		free_all(void)
 {
-	free_little(g_data->ptr_tiny, TYPE_TINY);
+	free_all_little(g_data->ptr_tiny, TYPE_TINY);
 	g_data->ptr_tiny = NULL;
 	g_data->size_tiny = 0;
-	free_little(g_data->ptr_small, TYPE_SMALL);
+	free_all_little(g_data->ptr_small, TYPE_SMALL);
 	g_data->ptr_small = NULL;
 	g_data->size_small = 0;
-	free_large(g_data->ptr_large);
+	free_all_large(g_data->ptr_large);
 	g_data->ptr_large = NULL;
+	free_g_data();
 }

@@ -55,6 +55,7 @@ static void	free_little_2(enum e_type_alloc type, t_info *info)
 				g_data->ptr_tiny = info->next;
 				g_data->size_tiny -= SIZE_ALLOC_TINY;
 			}
+			// ft_putstr("<<< call munmap on tinny\n");
 			munmap(info, SIZE_ALLOC_TINY);
 		}
 		else
@@ -64,6 +65,7 @@ static void	free_little_2(enum e_type_alloc type, t_info *info)
 				g_data->ptr_small = info->next;
 				g_data->size_small -= SIZE_ALLOC_SMALL;
 			}
+			// ft_putstr("<<< call munmap on tinny\n");
 			munmap(info, SIZE_ALLOC_SMALL);
 		}
 	}
@@ -119,4 +121,6 @@ void		free(void *ptr)
 		free_large(ptr, type, info);
 	else
 		free_little(ptr, type, info);
+	if (g_data->ptr_tiny == NULL && g_data->ptr_small == NULL && g_data->ptr_large == NULL)
+		free_g_data();
 }

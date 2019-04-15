@@ -15,6 +15,7 @@ ifeq ($(HOSTTYPE),)
 endif
 
 EXEC_FILE = test/test.c
+VALG_ARGS =
 
 NAME = libft_malloc_$(HOSTTYPE).so
 NAME_LINK = libft_malloc.so
@@ -225,14 +226,12 @@ $(OBJS_DIR):
 	@mkdir -p $(dir $(OBJS))
 
 clean:
-#	@make -C $(LIBFT_DIR) clean
 	$(START)
 	@printf $(RED)"-x remove .o files\n"$(NORMAL)
 	@rm -rf $(OBJS_DIR)
 	$(END)
 
 fclean: clean
-#	@make -C $(LIBFT_DIR) cleanlib
 	$(START)
 	@printf $(RED)"-x remove $(NAME)\n"$(NORMAL)
 	@printf $(RED)"-x remove $(NAME_LINK)\n"$(NORMAL)
@@ -261,8 +260,12 @@ valg:
 	@make CFLAGS="-Wall -Wextra -g3"
 	$(START)
 	@printf $(YELLOW)"->create test program\n"$(NORMAL)
-	@$(CC) test/main.c $(INC) -Wall -Wextra -g3 $(NAME)
+	@$(CC) $(EXEC_FILE) $(INC) -Wall -Wextra -g3 $(NAME)
 	$(END)
+	@printf $(MAGENTA)$(BOLD)"EXEC FT_MALLOC WITH VALGRIND\n--------------------\n"$(NORMAL)
+	valgrind $(VALG_ARGS) ./a.out
+	@rm a.out
+	@printf $(MAGENTA)$(BOLD)"--------------------\n"$(NORMAL)
 
 revalg: fclean valg
 

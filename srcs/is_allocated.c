@@ -30,6 +30,9 @@ int			is_allocated(void *ptr)
 	t_info	*tmp;
 	int		i;
 
+	if (g_data == NULL)
+		return (ERROR);
+
 	i = -1;
 	while (++i < 3)
 	{

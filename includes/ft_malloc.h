@@ -19,6 +19,8 @@
 # include <sys/mman.h>
 # include <libft.h>
 
+# include <stdio.h>
+
 # define SUCCESS 0
 # define ERROR   1
 
@@ -72,6 +74,8 @@ typedef struct		s_data
 
 extern t_data		*g_data;
 
+int					init_g_data(void);
+int					free_g_data(void);
 size_t				align(size_t size);
 void				init_info_alloc(t_info *info, t_info *prev, size_t size);
 void				*alloc_little(size_t size, enum e_type_alloc type);

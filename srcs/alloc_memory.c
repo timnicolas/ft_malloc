@@ -30,7 +30,7 @@
 
 t_data		*g_data = NULL;
 
-static int	init_data(void)
+int	init_g_data(void)
 {
 	g_data = mmap(0, sizeof(g_data), PROT_READ | PROT_WRITE,
 			MAP_ANON | MAP_PRIVATE, -1, 0);
@@ -40,6 +40,17 @@ static int	init_data(void)
 	g_data->size_small = 0;
 	g_data->ptr_large = NULL;
 	return (SUCCESS);
+}
+
+int free_g_data(void)
+{
+	if (g_data->ptr_tiny == NULL && g_data->ptr_small == NULL && g_data->ptr_large == NULL)
+	{
+		munmap(g_data, sizeof(g_data));
+		g_data = NULL;
+		return (SUCCESS);
+	}
+	return (ERROR);
 }
 
 size_t		align(size_t size)
@@ -64,7 +75,7 @@ void		*alloc_memory(size_t size)
 	void				*ptr;
 
 	if (g_data == NULL)
-		if (init_data() == ERROR)
+		if (init_g_data() == ERROR)
 			return (NULL);
 	official_size = size;
 	size = align(size);

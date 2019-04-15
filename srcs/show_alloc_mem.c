@@ -60,9 +60,12 @@ void		show_alloc_mem(void)
 
 	total_octet = 0;
 	total = 0;
-	if (!g_data)
+	if (g_data == NULL)
+	{
 		ft_printf(YELLOW""BOLD"total:"EOC""BOLD" %d"EOC" block ("BOLD"%zu"EOC
 				" octets)\n"EOC, total, total_octet);
+		return ;
+	}
 	ft_printf(YELLOW""BOLD"TINY:"EOC""BOLD" %p\n"EOC, g_data->ptr_tiny);
 	ptr = g_data->ptr_tiny;
 	total += print_alloc(ptr, &total_octet);

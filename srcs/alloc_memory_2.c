@@ -37,6 +37,7 @@ static int	init(enum e_type_alloc type)
 {
 	if (type == TYPE_TINY)
 	{
+		// ft_putstr(">>> init tiny\n");
 		if (!(g_data->ptr_tiny = mmap(0, SIZE_ALLOC_TINY,
 						PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
 			return (ERROR);
@@ -48,6 +49,7 @@ static int	init(enum e_type_alloc type)
 	}
 	else if (type == TYPE_SMALL)
 	{
+		// ft_putstr(">>> init small\n");
 		if (!(g_data->ptr_small = mmap(0, SIZE_ALLOC_SMALL,
 						PROT_READ | PROT_WRITE, MAP_ANON | MAP_PRIVATE, -1, 0)))
 			return (ERROR);
@@ -70,6 +72,7 @@ static int	alloc_new_slot(void *ptr, enum e_type_alloc type)
 
 	if (type == TYPE_TINY)
 	{
+		// ft_putstr(">>> alloc new tiny\n");
 		if (!(new = mmap(0, SIZE_ALLOC_TINY, PROT_READ | PROT_WRITE,
 						MAP_ANON | MAP_PRIVATE, -1, 0)))
 			return (ERROR);
@@ -77,6 +80,7 @@ static int	alloc_new_slot(void *ptr, enum e_type_alloc type)
 	}
 	else
 	{
+		// ft_putstr(">>> alloc new small\n");
 		if (!(new = mmap(0, SIZE_ALLOC_SMALL, PROT_READ | PROT_WRITE,
 						MAP_ANON | MAP_PRIVATE, -1, 0)))
 			return (ERROR);
